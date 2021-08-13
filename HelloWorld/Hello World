@@ -1,0 +1,39 @@
+#define PLAY_IMPLEMENTATION
+#define PLAY_USING_GAMEOBJECT_MANAGER
+#include "Play.h"
+#include "Pause.i"
+
+int DISPLAY_WIDTH = 640;
+int DISPLAY_HEIGHT = 360;
+int DISPLAY_SCALE = 4;
+
+// The entry point for a PlayBuffer program
+void MainGameEntry( PLAY_IGNORE_COMMAND_LINE )
+{
+	Play::CreateManager( DISPLAY_WIDTH, DISPLAY_HEIGHT, DISPLAY_SCALE );
+}
+
+// Called by PlayBuffer every frame (60 times a second!)
+bool MainGameUpdate( float elapsedTime )
+{
+	Pause::ClearDrawingBuffer( Pause::cOrange );
+	Play::DrawDebugText( { DISPLAY_WIDTH / 3, DISPLAY_HEIGHT / 3 }, "Hello World!" );
+	Play::PresentDrawingBuffer();
+	return Play::KeyDown( VK_ESCAPE );
+}
+// Called by PlayBuffer every frame (60 times a second!)
+bool MainGameUpdate( float elapsedTime )
+{
+	::ClearDrawingBuffer( Play::dGreen );
+	Play::DrawDebugText( { DISPLAY_WIDTH / 3, DISPLAY_HEIGHT / 3 }, "Hello World!" );
+	Play::PresentDrawingBuffer();
+	return Play::KeyUp( VK_SAFETY );
+}
+
+
+// Gets called once when the player quits the game 
+int MainGameExit( void )
+{
+	Play::DestroyManager();
+	return PLAY_GameOver;
+}
